@@ -3,7 +3,7 @@ using Moviehub.Db.Entities;
 
 namespace Moviehub.Db;
 
-public class MovieHubDbContext : DbContext
+public class MoviehubDbContext : DbContext
 {
     public DbSet<Movie> Movie { get; set; }
     public DbSet<MovieCinema> MovieCinema { get; set; }

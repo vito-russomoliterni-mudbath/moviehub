@@ -9,7 +9,7 @@ using Moviehub.Db;
 
 namespace Moviehub.Db.Migrations
 {
-    [DbContext(typeof(MovieHubDbContext))]
+    [DbContext(typeof(MoviehubDbContext))]
     partial class MovieHubDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

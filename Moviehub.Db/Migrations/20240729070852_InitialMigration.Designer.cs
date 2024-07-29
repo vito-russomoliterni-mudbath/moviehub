@@ -10,7 +10,7 @@ using Moviehub.Db;
 
 namespace Moviehub.Db.Migrations
 {
-    [DbContext(typeof(MovieHubDbContext))]
+    [DbContext(typeof(MoviehubDbContext))]
     [Migration("20240729070852_InitialMigration")]
     partial class InitialMigration
     {
