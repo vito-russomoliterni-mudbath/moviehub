@@ -44,4 +44,6 @@ public class Movie
     public string PrincessTheatreMovieId { get; set; } = string.Empty;
 
     public virtual List<MovieCinema> MovieCinemas { get; set; } = new();
+
+    public virtual List<MovieReview> MovieReviews { get; set; } = new();
 }
