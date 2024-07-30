@@ -10,9 +10,9 @@ public class MoviehubDbContext : DbContext
     {
     }
 
-    public DbSet<Movie> Movie { get; set; }
-    public DbSet<MovieCinema> MovieCinema { get; set; }
-    public DbSet<Cinema> Cinema { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<MovieCinema> MovieCinemas { get; set; }
+    public DbSet<Cinema> Cinemas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

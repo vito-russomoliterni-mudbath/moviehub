@@ -20,7 +20,7 @@ public class MovieRepository : IMovieRepository
     public async Task<List<Movie>> GetMovies(string title = "", string genre = "")
     {
         var movies = new List<Movie>();
-        var movieQuery = _context.Movie.AsQueryable();
+        var movieQuery = _context.Movies.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(title))
         {
@@ -57,14 +57,14 @@ public class MovieRepository : IMovieRepository
 
     public async Task<MovieDetail?> GetMovieDetail(int id)
     {
-        var entityMovie = await _context.Movie.FindAsync(id);
+        var entityMovie = await _context.Movies.FindAsync(id);
         if (entityMovie == null)
         {
             _logger.LogInformation("No movie found for id {id}", id);
             return null;
         }
         
-        var movieCinemas = await _context.MovieCinema
+        var movieCinemas = await _context.MovieCinemas
             .Include(mc => mc.Cinema)
             .Where(mc => mc.MovieId == id)
             .ToListAsync();
