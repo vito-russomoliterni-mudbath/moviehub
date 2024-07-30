@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Moviehub.Data.Database.Entities;
 
+[Table("Cinema")]
 public class Cinema
 {
     [Key]
