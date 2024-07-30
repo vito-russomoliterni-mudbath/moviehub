@@ -3,6 +3,7 @@ using Moviehub.Data.Repositories.Interfaces;
 using Moviehub.Data.Repositories.Models;
 using Moviehub.Data.Database;
 using Microsoft.Extensions.Logging;
+using DbMovieReview = Moviehub.Data.Database.Entities.MovieReview;
 
 namespace Moviehub.Data.Repositories;
 
@@ -20,7 +21,9 @@ public class MovieRepository : IMovieRepository
     public async Task<List<Movie>> GetMovies(string title = "", string genre = "")
     {
         var movies = new List<Movie>();
-        var movieQuery = _context.Movies.AsQueryable();
+        var movieQuery = _context.Movies
+            .Include(m => m.MovieReviews)
+            .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(title))
         {
@@ -48,7 +51,8 @@ public class MovieRepository : IMovieRepository
                 Runtime = entityMovie.Runtime,
                 Synopsis = entityMovie.Synopsis,
                 Director = entityMovie.Director,
-                Rating = entityMovie.Rating
+                Rating = entityMovie.Rating,
+                AvgScore = CalculateAvgScore(entityMovie.MovieReviews.ToList()),
             });
         }
 
@@ -57,7 +61,10 @@ public class MovieRepository : IMovieRepository
 
     public async Task<MovieDetail?> GetMovieDetail(int id)
     {
-        var entityMovie = await _context.Movies.FindAsync(id);
+        var entityMovie = await _context.Movies
+            .Include(m => m.MovieReviews)
+            .FirstOrDefaultAsync(m => m.Id == id);
+
         if (entityMovie == null)
         {
             _logger.LogInformation("No movie found for id {id}", id);
@@ -81,6 +88,7 @@ public class MovieRepository : IMovieRepository
             Synopsis = entityMovie.Synopsis,
             Director = entityMovie.Director,
             Rating = entityMovie.Rating,
+            AvgScore = CalculateAvgScore(entityMovie.MovieReviews.ToList()),
             Cinemas = movieCinemas.Select(mc => new Cinema
             {
                 Name = mc.Cinema.Name,
@@ -88,5 +96,13 @@ public class MovieRepository : IMovieRepository
                 TicketPrice = mc.TicketPrice
             }).ToList()
         };
+    }
+
+    private decimal CalculateAvgScore(List<DbMovieReview> reviews)
+    {
+        if (!reviews.Any())
+            return 0;
+
+        return reviews.Average(r => r.Score);
     }
 }

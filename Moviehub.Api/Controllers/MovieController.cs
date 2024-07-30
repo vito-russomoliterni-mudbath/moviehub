@@ -17,11 +17,11 @@ public class MovieController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet("")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<Movie>>> GetMovies([FromQuery] string title, [FromQuery] string genre)
+    public async Task<ActionResult<List<Movie>>> GetMovies([FromQuery] string title = "", [FromQuery] string genre = "")
     {
         try
         {
