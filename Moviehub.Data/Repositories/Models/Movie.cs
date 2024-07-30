@@ -10,4 +10,5 @@ public class Movie
     public string Synopsis { get; set; } = string.Empty;
     public string Director { get; set; } = string.Empty;
     public string Rating { get; set; } = string.Empty;
+    public decimal AvgScore { get; set; }
 }

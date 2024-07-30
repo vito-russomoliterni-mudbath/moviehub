@@ -4,8 +4,9 @@ using Moviehub.Data.Repositories.Models;
 
 namespace Moviehub.Api.Controllers;
 
+[ApiController]
 [Route("api/[controller]")]
-public class MovieController : Controller
+public class MovieController : ControllerBase
 {
     private readonly IMovieRepository _movieRepository;
     private readonly ILogger<MovieController> _logger;

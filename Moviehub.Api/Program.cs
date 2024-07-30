@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<IMovieRepository, MovieRepository>();
+builder.Services.AddTransient<IMovieReviewRepository, MovieReviewRepository>();
 builder.Services.AddDbContext<MoviehubDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddLogging(options =>
