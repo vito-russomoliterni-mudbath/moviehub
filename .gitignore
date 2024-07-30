@@ -409,3 +409,7 @@ FodyWeavers.xsd
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudiocode
+
+# Ignore Sqlite working files
+*.db-shm
+*.db-wal
