@@ -1,18 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-using Moviehub.Db.Entities;
+using Moviehub.Data.Database.Entities;
 
-namespace Moviehub.Db;
+namespace Moviehub.Data.Database;
 
 public class MoviehubDbContext : DbContext
 {
+    public MoviehubDbContext(DbContextOptions<MoviehubDbContext> options)
+        : base(options)
+    {
+    }
+
     public DbSet<Movie> Movie { get; set; }
     public DbSet<MovieCinema> MovieCinema { get; set; }
     public DbSet<Cinema> Cinema { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source=./../db/moviehub.db");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

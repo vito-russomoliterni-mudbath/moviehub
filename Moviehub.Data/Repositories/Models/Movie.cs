@@ -1,4 +1,4 @@
-namespace Moviehub.Data.Models;
+namespace Moviehub.Data.Repositories.Models;
 
 public class Movie
 {

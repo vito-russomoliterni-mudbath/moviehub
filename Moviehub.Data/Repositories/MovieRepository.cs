@@ -1,17 +1,20 @@
 using Microsoft.EntityFrameworkCore;
-using Moviehub.Data.Interfaces;
-using Moviehub.Data.Models;
-using Moviehub.Db;
+using Moviehub.Data.Repositories.Interfaces;
+using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Database;
+using Microsoft.Extensions.Logging;
 
-namespace Moviehub.Data;
+namespace Moviehub.Data.Repositories;
 
 public class MovieRepository : IMovieRepository
 {
     private readonly MoviehubDbContext _context;
+    private readonly ILogger<MovieRepository> _logger;
 
-    public MovieRepository(MoviehubDbContext context)
+    public MovieRepository(MoviehubDbContext context, ILogger<MovieRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<List<Movie>> GetMovies(string title = "", string genre = "")
@@ -21,17 +24,20 @@ public class MovieRepository : IMovieRepository
 
         if (!string.IsNullOrWhiteSpace(title))
         {
-            movieQuery = movieQuery.Where(m => m.Title.Contains(title));
+            _logger.LogInformation("Filtering movies by title {title}", title);
+            movieQuery = movieQuery.Where(m => m.Title.ToLower().Contains(title.ToLower()));
         }
 
         if (!string.IsNullOrWhiteSpace(genre))
         {
-            movieQuery = movieQuery.Where(m => m.Genre.Contains(genre));
+            _logger.LogInformation("Filtering movies by genre {genre}", genre);
+            movieQuery = movieQuery.Where(m => m.Genre.ToLower().Contains(genre.ToLower()));
         }
 
         var entityMovies = await movieQuery.ToListAsync();
+        _logger.LogInformation("{Count} movies found", entityMovies.Count);
 
-        foreach (var entityMovie in movieQuery)
+        foreach (var entityMovie in entityMovies)
         {
             movies.Add(new Movie
             {
@@ -54,6 +60,7 @@ public class MovieRepository : IMovieRepository
         var entityMovie = await _context.Movie.FindAsync(id);
         if (entityMovie == null)
         {
+            _logger.LogInformation("No movie found for id {id}", id);
             return null;
         }
         
@@ -62,10 +69,7 @@ public class MovieRepository : IMovieRepository
             .Where(mc => mc.MovieId == id)
             .ToListAsync();
 
-        if (!movieCinemas.Any())
-        {
-            return null;
-        }
+        _logger.LogInformation("{Count} cinemas found for movie with id {id}", movieCinemas.Count, id);
 
         return new MovieDetail
         {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Moviehub.Data.Interfaces;
-using Moviehub.Data.Models;
+using Moviehub.Data.Repositories.Interfaces;
+using Moviehub.Data.Repositories.Models;
 
 namespace Moviehub.Api.Controllers;
 
@@ -8,31 +8,55 @@ namespace Moviehub.Api.Controllers;
 public class MovieController : Controller
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly ILogger<MovieController> _logger;
 
-    public MovieController(IMovieRepository movieRepository)
+    public MovieController(IMovieRepository movieRepository, ILogger<MovieController> logger)
     {
         _movieRepository = movieRepository;
+        _logger = logger;
     }
 
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<List<Movie>>> GetMovies([FromQuery] string title, [FromQuery] string genre)
     {
-        var movies = await _movieRepository.GetMovies(title, genre);
+        try
+        {
+            var movies = await _movieRepository.GetMovies(title, genre);
 
-        return Ok(movies);
+            if (!movies.Any())
+                return NotFound();
+
+            return Ok(movies);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while retrieving movies.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving movies.");
+        }
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<MovieDetail>> GetMovieDetails(int id)
     {
-        var movie = await _movieRepository.GetMovieDetail(id);
+        try
+        {
+            var movie = await _movieRepository.GetMovieDetail(id);
 
-        if (movie == null)
-            return NotFound();
+            if (movie == null)
+                return NotFound();
 
-        return Ok(movie);
+            return Ok(movie);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while retrieving movie details.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving movie details.");
+        }
     }
 }

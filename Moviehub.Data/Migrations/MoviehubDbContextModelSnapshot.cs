@@ -2,25 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Moviehub.Db;
+using Moviehub.Data.Database;
 
 #nullable disable
 
-namespace Moviehub.Db.Migrations
+namespace Moviehub.Data.Migrations
 {
     [DbContext(typeof(MoviehubDbContext))]
-    [Migration("20240729070852_InitialMigration")]
-    partial class InitialMigration
+    partial class MoviehubDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
 
-            modelBuilder.Entity("Moviehub.Db.Entities.Cinema", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.Cinema", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +39,7 @@ namespace Moviehub.Db.Migrations
                     b.ToTable("Cinema");
                 });
 
-            modelBuilder.Entity("Moviehub.Db.Entities.Movie", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,7 +89,7 @@ namespace Moviehub.Db.Migrations
                     b.ToTable("Movie");
                 });
 
-            modelBuilder.Entity("Moviehub.Db.Entities.MovieCinema", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.MovieCinema", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,15 +121,15 @@ namespace Moviehub.Db.Migrations
                     b.ToTable("MovieCinema");
                 });
 
-            modelBuilder.Entity("Moviehub.Db.Entities.MovieCinema", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.MovieCinema", b =>
                 {
-                    b.HasOne("Moviehub.Db.Entities.Cinema", "Cinema")
+                    b.HasOne("Moviehub.Data.Database.Entities.Cinema", "Cinema")
                         .WithMany("MovieCinemas")
                         .HasForeignKey("CinemaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Moviehub.Db.Entities.Movie", "Movie")
+                    b.HasOne("Moviehub.Data.Database.Entities.Movie", "Movie")
                         .WithMany("MovieCinemas")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -143,12 +140,12 @@ namespace Moviehub.Db.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("Moviehub.Db.Entities.Cinema", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.Cinema", b =>
                 {
                     b.Navigation("MovieCinemas");
                 });
 
-            modelBuilder.Entity("Moviehub.Db.Entities.Movie", b =>
+            modelBuilder.Entity("Moviehub.Data.Database.Entities.Movie", b =>
                 {
                     b.Navigation("MovieCinemas");
                 });

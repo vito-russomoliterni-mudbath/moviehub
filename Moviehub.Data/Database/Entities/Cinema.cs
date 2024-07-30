@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Moviehub.Db.Entities;
+namespace Moviehub.Data.Database.Entities;
 
 public class Cinema
 {

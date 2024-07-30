@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Moviehub.Db.Migrations
+namespace Moviehub.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

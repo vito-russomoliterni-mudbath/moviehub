@@ -1,6 +1,6 @@
-using Moviehub.Data.Models;
+using Moviehub.Data.Repositories.Models;
 
-namespace Moviehub.Data.Interfaces;
+namespace Moviehub.Data.Repositories.Interfaces;
 
 public interface IMovieRepository
 {
