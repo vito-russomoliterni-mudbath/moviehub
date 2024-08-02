@@ -2,12 +2,14 @@ using Moviehub.Data.Repositories.Interfaces;
 using Moviehub.Data.Database;
 using Moviehub.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 builder.Configuration
-    .AddJsonFile("./Moviehub.Api/appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"./Moviehub.Api/appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile(Path.Combine(assemblyPath, "appsettings.json"), optional: false, reloadOnChange: true)
+    .AddJsonFile(Path.Combine(assemblyPath, $"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 // Add services to the container.
@@ -39,3 +41,5 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
 app.Run();
+
+public partial class Program { }

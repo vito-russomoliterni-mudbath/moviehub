@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moviehub.Data", "Moviehub.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moviehub.Api", "Moviehub.Api\Moviehub.Api.csproj", "{963D6758-DD0C-401F-A9C5-D5F11A7E8207}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{19C06C28-AB2D-4288-896C-57BD4D49ED01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moviehub.Api.Tests", "Test\Moviehub.Api.Tests\Moviehub.Api.Tests.csproj", "{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,11 +25,18 @@ Global
 		{963D6758-DD0C-401F-A9C5-D5F11A7E8207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{963D6758-DD0C-401F-A9C5-D5F11A7E8207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{963D6758-DD0C-401F-A9C5-D5F11A7E8207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5EA868AE-040F-4283-B7AD-02DBF9E82D81}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{52A6C9F7-EB40-4429-8537-BB8DA9D1CB76} = {19C06C28-AB2D-4288-896C-57BD4D49ED01}
 	EndGlobalSection
 EndGlobal
