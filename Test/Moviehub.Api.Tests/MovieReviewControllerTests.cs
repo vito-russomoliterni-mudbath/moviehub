@@ -27,7 +27,7 @@ public class MovieReviewControllerTests
     {
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<MoviehubDbContext>();
-        dbContext.Database.EnsureCreated();
+        await dbContext.Database.EnsureCreatedAsync();
         await SeedData(dbContext);
     }
 
@@ -35,8 +35,7 @@ public class MovieReviewControllerTests
     {
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<MoviehubDbContext>();
-        dbContext.Database.EnsureCreated();
-        await RemoveData(dbContext);
+        await dbContext.Database.EnsureDeletedAsync();
     }
 
     [Fact]

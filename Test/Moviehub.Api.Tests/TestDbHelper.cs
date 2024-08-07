@@ -8,27 +8,7 @@ public static class TestDbHelper
 {
     public static async Task SeedData(MoviehubDbContext db)
     {
-        db.MovieCinemas.Add(MovieCinema);
-        await db.SaveChangesAsync();
-    }
-
-    public static async Task RemoveData(MoviehubDbContext db)
-    {
-        var tables = new[] { "MovieCinema", "Movie", "Cinema", "MovieReview" }; 
-        
-        foreach (var table in tables)
-        {
-            var tableExists = await db.Database.ExecuteSqlAsync(
-                $"SELECT name FROM sqlite_master WHERE type='table' AND name='{table}';");
-
-            if (tableExists > 0)
-            {
-                await db.Database.ExecuteSqlAsync($"DELETE FROM \"{table}\"");
-            }
-        }
-    }
-
-    private static Movie Movie => new Movie
+        var movie = new Movie
         {
             Title = "The Shawshank Redemption",
             ReleaseDate = new DateTime(1994, 10, 14),
@@ -36,37 +16,45 @@ public static class TestDbHelper
             Runtime = 142,
             Synopsis = "",
             Director = "Frank Darabont",
-            Rating = "R",
-            MovieReviews = new List<MovieReview>
-                {
-                    new MovieReview
-                    {
-                        MovieId = 1,
-                        Score = 4.5m,
-                        Comment = "A classic movie that will stand the test of time.",
-                        ReviewDate = new DateTime(1994, 10, 14)
-                    },
-                    new MovieReview
-                    {
-                        MovieId = 1,
-                        Score = 4m,
-                        Comment = "Neat movie.",
-                        ReviewDate = new DateTime(2024, 4, 14)
-                    }
-                }
+            Rating = "R"
         };
-
-    private static Cinema Cinema => new Cinema
+    
+        var movieReview1 = new MovieReview
+        {
+            Movie = movie,
+            Score = 4.5m,
+            Comment = "A classic movie that will stand the test of time.",
+            ReviewDate = new DateTime(1994, 10, 14)
+        };
+    
+        var movieReview2 = new MovieReview
+        {
+            Movie = movie,
+            Score = 4m,
+            Comment = "Neat movie.",
+            ReviewDate = new DateTime(2024, 4, 14)
+        };
+    
+        var cinema = new Cinema
         {
             Name = "Cinema 1",
             Location = "Location 1"
         };
-
-    private static MovieCinema MovieCinema => new MovieCinema
+    
+        var movieCinema = new MovieCinema
         {
-            Movie = Movie,
-            Cinema = Cinema,
+            Movie = movie,
+            Cinema = cinema,
             Showtime = new DateTime(2024, 4, 14, 12, 0, 0),
             TicketPrice = 10
         };
+
+        db.Movies.Add(movie);
+        movie.MovieReviews.Add(movieReview1);
+        movie.MovieReviews.Add(movieReview2);
+        db.Cinemas.Add(cinema);
+        db.MovieCinemas.Add(movieCinema);
+    
+        await db.SaveChangesAsync();
+    }
 }
