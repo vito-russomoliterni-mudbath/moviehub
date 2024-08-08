@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 
 namespace Moviehub.Api.Controllers;
 
@@ -21,7 +21,7 @@ public class MovieReviewController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> AddMovieReview([FromBody] AddMovieReview review)
+    public async Task<ActionResult> AddMovieReview([FromBody] MovieReviewAddDto review)
     {
         try
         {
@@ -44,7 +44,7 @@ public class MovieReviewController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<MovieReview>>> GetMovieReviews([FromQuery] int movieId)
+    public async Task<ActionResult<List<MovieReviewDto>>> GetMovieReviews([FromQuery] int movieId)
     {
         try
         {
@@ -66,7 +66,7 @@ public class MovieReviewController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> UpdateMovieReview([FromBody] UpdateMovieReview review)
+    public async Task<ActionResult> UpdateMovieReview([FromBody] MovieReviewUpdateDto review)
     {
         try
         {

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moviehub.Data.Database;
 using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 using DbMovieReview = Moviehub.Data.Database.Entities.MovieReview;
 
 namespace Moviehub.Data.Repositories;
@@ -18,7 +18,7 @@ public class MovieReviewRepository : IMovieReviewRepository
         _logger = logger;
     }
 
-    public async Task AddMovieReview(AddMovieReview review)
+    public async Task AddMovieReview(MovieReviewAddDto review)
     {
         var movie = await _context.Movies.FindAsync(review.MovieId);
 
@@ -42,7 +42,7 @@ public class MovieReviewRepository : IMovieReviewRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<MovieReview>> GetMovieReviews(int movieId)
+    public async Task<List<MovieReviewDto>> GetMovieReviews(int movieId)
     {
         var reviews =  await _context.MovieReviews
             .Where(r => r.MovieId == movieId)
@@ -51,12 +51,12 @@ public class MovieReviewRepository : IMovieReviewRepository
         if (!reviews.Any())
         {
             _logger.LogWarning("No reviews found for movie {movieId}", movieId);
-            return new List<MovieReview>();
+            return new List<MovieReviewDto>();
         }
 
         _logger.LogInformation("Retrieved {reviewCount} reviews for movie {movieId}", reviews.Count, movieId);
 
-        return reviews.Select(r => new MovieReview
+        return reviews.Select(r => new MovieReviewDto
         {
             Id = r.Id,
             Comment = r.Comment,
@@ -66,7 +66,7 @@ public class MovieReviewRepository : IMovieReviewRepository
         }).ToList();
     }
 
-    public async Task UpdateMovieReview(UpdateMovieReview review)
+    public async Task UpdateMovieReview(MovieReviewUpdateDto review)
     {
         var entityReview = await _context.MovieReviews.FindAsync(review.Id);
 

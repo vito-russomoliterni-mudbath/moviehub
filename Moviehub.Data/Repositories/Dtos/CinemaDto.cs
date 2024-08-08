@@ -1,6 +1,6 @@
-namespace Moviehub.Data.Repositories.Models;
+namespace Moviehub.Data.Repositories.Dtos;
 
-public class Cinema
+public class CinemaDto
 {
     public string Name { get; set; } = string.Empty;
     public decimal TicketPrice { get; set; }

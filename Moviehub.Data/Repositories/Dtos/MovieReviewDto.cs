@@ -1,23 +1,23 @@
-namespace Moviehub.Data.Repositories.Models;
+namespace Moviehub.Data.Repositories.Dtos;
 
-public class MovieReviewBase
+public class MovieReviewBaseDto
 {
     public decimal Score { get; set; }
     public string Comment { get; set; } = string.Empty;
     public DateTime ReviewDate { get; set; }
 }
 
-public class AddMovieReview : MovieReviewBase
+public class MovieReviewAddDto : MovieReviewBaseDto
 {
     public int MovieId { get; set; }
 }
 
-public class UpdateMovieReview : MovieReviewBase
+public class MovieReviewUpdateDto : MovieReviewBaseDto
 {
     public int Id { get; set; }
 }
 
-public class MovieReview : MovieReviewBase
+public class MovieReviewDto : MovieReviewBaseDto
 {
     public int Id { get; set; }
     public int MovieId { get; set; }

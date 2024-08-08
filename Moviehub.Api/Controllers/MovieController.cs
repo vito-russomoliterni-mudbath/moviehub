@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 
 namespace Moviehub.Api.Controllers;
 
@@ -21,7 +21,7 @@ public class MovieController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<Movie>>> GetMovies([FromQuery] string title = "", [FromQuery] string genre = "")
+    public async Task<ActionResult<List<MovieDto>>> GetMovies([FromQuery] string title = "", [FromQuery] string genre = "")
     {
         try
         {

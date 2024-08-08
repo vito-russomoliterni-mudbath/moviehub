@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 using Moviehub.Data.Database;
 using Microsoft.Extensions.Logging;
 using DbMovieReview = Moviehub.Data.Database.Entities.MovieReview;
@@ -18,9 +18,9 @@ public class MovieRepository : IMovieRepository
         _logger = logger;
     }
 
-    public async Task<List<Movie>> GetMovies(string title = "", string genre = "")
+    public async Task<List<MovieDto>> GetMovies(string title = "", string genre = "")
     {
-        var movies = new List<Movie>();
+        var movies = new List<MovieDto>();
         var movieQuery = _context.Movies
             .Include(m => m.MovieReviews)
             .AsQueryable();
@@ -42,7 +42,7 @@ public class MovieRepository : IMovieRepository
 
         foreach (var entityMovie in entityMovies)
         {
-            movies.Add(new Movie
+            movies.Add(new MovieDto
             {
                 Id = entityMovie.Id,
                 Title = entityMovie.Title,
@@ -89,7 +89,7 @@ public class MovieRepository : IMovieRepository
             Director = entityMovie.Director,
             Rating = entityMovie.Rating,
             AvgScore = CalculateAvgScore(entityMovie.MovieReviews.ToList()),
-            Cinemas = movieCinemas.Select(mc => new Cinema
+            Cinemas = movieCinemas.Select(mc => new CinemaDto
             {
                 Name = mc.Cinema.Name,
                 Showtime = mc.Showtime,

@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Moviehub.Data.Database;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 using Xunit;
 using static Moviehub.Api.Tests.TestDbHelper;
 
@@ -44,7 +44,7 @@ public class MovieReviewControllerTests
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Post, "/api/movieReview")
         {
-            Content = new StringContent(JsonSerializer.Serialize(new AddMovieReview
+            Content = new StringContent(JsonSerializer.Serialize(new MovieReviewAddDto
             {
                 MovieId = 1,
                 Score = 3.5m,
@@ -65,7 +65,7 @@ public class MovieReviewControllerTests
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Post, "/api/movieReview")
         {
-            Content = new StringContent(JsonSerializer.Serialize(new AddMovieReview
+            Content = new StringContent(JsonSerializer.Serialize(new MovieReviewAddDto
             {
                 MovieId = 99,
                 Score = 0.5m,
@@ -91,7 +91,7 @@ public class MovieReviewControllerTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<List<MovieReview>>();
+        var result = await response.Content.ReadFromJsonAsync<List<MovieReviewDto>>();
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
     }
@@ -102,7 +102,7 @@ public class MovieReviewControllerTests
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Patch, "/api/movieReview")
         {
-            Content = new StringContent(JsonSerializer.Serialize(new UpdateMovieReview
+            Content = new StringContent(JsonSerializer.Serialize(new MovieReviewUpdateDto
             {
                 Id = 1,
                 Score = 4.5m,
@@ -123,7 +123,7 @@ public class MovieReviewControllerTests
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Patch, "/api/movieReview")
         {
-            Content = new StringContent(JsonSerializer.Serialize(new UpdateMovieReview
+            Content = new StringContent(JsonSerializer.Serialize(new MovieReviewUpdateDto
             {
                 Id = 99,
                 Score = 4.5m,

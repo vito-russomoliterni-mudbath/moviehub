@@ -1,6 +1,6 @@
-namespace Moviehub.Data.Repositories.Models;
+namespace Moviehub.Data.Repositories.Dtos;
 
-public class Movie
+public class MovieDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;

@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Moviehub.Data.Database;
-using Moviehub.Data.Repositories.Models;
+using Moviehub.Data.Repositories.Dtos;
 using Xunit;
 using static Moviehub.Api.Tests.TestDbHelper;
 
@@ -46,7 +46,7 @@ public class MovieControllerTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<List<Movie>>();
+        var result = await response.Content.ReadFromJsonAsync<List<MovieDto>>();
         Assert.NotNull(result);
         Assert.Single(result);
     }
