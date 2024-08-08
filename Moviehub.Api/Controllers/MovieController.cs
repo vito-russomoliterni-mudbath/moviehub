@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Dtos;
+using Moviehub.Api.Dtos;
+using Moviehub.Api.Services.Interfaces;
 
 namespace Moviehub.Api.Controllers;
 
@@ -8,12 +8,12 @@ namespace Moviehub.Api.Controllers;
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
 {
-    private readonly IMovieRepository _movieRepository;
+    private readonly IMovieService _movieService;
     private readonly ILogger<MovieController> _logger;
 
-    public MovieController(IMovieRepository movieRepository, ILogger<MovieController> logger)
+    public MovieController(IMovieService movieService, ILogger<MovieController> logger)
     {
-        _movieRepository = movieRepository;
+        _movieService = movieService;
         _logger = logger;
     }
 
@@ -25,7 +25,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movies = await _movieRepository.GetMovies(title, genre);
+            var movies = await _movieService.GetMovies(title, genre);
 
             if (!movies.Any())
                 return NotFound();
@@ -43,11 +43,11 @@ public class MovieController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<MovieDetail>> GetMovieDetails(int id)
+    public async Task<ActionResult<MovieDetailDto>> GetMovieDetails(int id)
     {
         try
         {
-            var movie = await _movieRepository.GetMovieDetail(id);
+            var movie = await _movieService.GetMovieDetail(id);
 
             if (movie == null)
                 return NotFound();

@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Moviehub.Data.Database;
-using Moviehub.Data.Repositories.Dtos;
+using Moviehub.Api.Dtos;
 using Xunit;
 using static Moviehub.Api.Tests.TestDbHelper;
 

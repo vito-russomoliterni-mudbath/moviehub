@@ -1,9 +1,9 @@
-using Moviehub.Data.Repositories.Dtos;
+using Moviehub.Data.Database.Entities;
 
 namespace Moviehub.Data.Repositories.Interfaces;
 
 public interface IMovieRepository
 {
-    Task<List<MovieDto>> GetMovies(string title = "", string genre = "");
-    Task<MovieDetail?> GetMovieDetail(int id);
+    Task<List<Movie>> GetMovies(string title = "", string genre = "");
+    Task<Movie?> GetMovie(int id);
 }

@@ -1,4 +1,4 @@
-namespace Moviehub.Data.Repositories.Dtos;
+namespace Moviehub.Api.Dtos;
 
 public class MovieDto
 {

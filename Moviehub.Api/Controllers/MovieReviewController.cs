@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Moviehub.Data.Repositories.Interfaces;
-using Moviehub.Data.Repositories.Dtos;
+using Moviehub.Api.Dtos;
+using Moviehub.Api.Services.Interfaces;
 
 namespace Moviehub.Api.Controllers;
 
@@ -8,12 +8,12 @@ namespace Moviehub.Api.Controllers;
 [Route("api/[controller]")]
 public class MovieReviewController : ControllerBase
 {
-    private readonly IMovieReviewRepository _movieReviewRepository;
+    private readonly IMovieReviewService _movieReviewService;
     private readonly ILogger<MovieReviewController> _logger;
 
-    public MovieReviewController(IMovieReviewRepository movieReviewRepository, ILogger<MovieReviewController> logger)
+    public MovieReviewController(IMovieReviewService movieReviewService, ILogger<MovieReviewController> logger)
     {
-        _movieReviewRepository = movieReviewRepository;
+        _movieReviewService = movieReviewService;
         _logger = logger;
     }
 
@@ -25,7 +25,7 @@ public class MovieReviewController : ControllerBase
     {
         try
         {
-            await _movieReviewRepository.AddMovieReview(review);
+            await _movieReviewService.AddMovieReview(review);
             return StatusCode(StatusCodes.Status201Created);
         }
         catch (ArgumentException ex)
@@ -48,7 +48,7 @@ public class MovieReviewController : ControllerBase
     {
         try
         {
-            var reviews = await _movieReviewRepository.GetMovieReviews(movieId);
+            var reviews = await _movieReviewService.GetMovieReviewsByMovieId(movieId);
 
             if (!reviews.Any())
                 return NotFound();
@@ -70,7 +70,7 @@ public class MovieReviewController : ControllerBase
     {
         try
         {
-            await _movieReviewRepository.UpdateMovieReview(review);
+            await _movieReviewService.UpdateMovieReview(review);
             return Ok();
         }
         catch (ArgumentException ex)
@@ -93,7 +93,7 @@ public class MovieReviewController : ControllerBase
     {
         try
         {
-            await _movieReviewRepository.DeleteMovieReview(reviewId);
+            await _movieReviewService.DeleteMovieReview(reviewId);
             return Ok();
         }
         catch (ArgumentException ex)

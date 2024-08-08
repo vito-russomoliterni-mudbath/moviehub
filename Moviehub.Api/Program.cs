@@ -3,6 +3,8 @@ using Moviehub.Data.Database;
 using Moviehub.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Moviehub.Api.Services.Interfaces;
+using Moviehub.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddTransient<IMovieReviewService, MovieReviewService>();
 builder.Services.AddTransient<IMovieRepository, MovieRepository>();
 builder.Services.AddTransient<IMovieReviewRepository, MovieReviewRepository>();
 builder.Services.AddDbContext<MoviehubDbContext>(options =>

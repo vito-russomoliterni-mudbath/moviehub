@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Moviehub.Data.Database;
-using Moviehub.Data.Repositories.Dtos;
+using Moviehub.Api.Dtos;
 using Xunit;
 using static Moviehub.Api.Tests.TestDbHelper;
 
@@ -75,7 +75,7 @@ public class MovieControllerTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadFromJsonAsync<MovieDetail>();
+        var result = await response.Content.ReadFromJsonAsync<MovieDetailDto>();
         Assert.NotNull(result);
         Assert.Equal("The Shawshank Redemption", result.Title);
         Assert.NotEmpty(result.Cinemas);
