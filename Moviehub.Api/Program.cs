@@ -9,7 +9,7 @@ using Moviehub.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? Directory.GetCurrentDirectory();
 builder.Configuration
     .AddJsonFile(Path.Combine(assemblyPath, "appsettings.json"), optional: false, reloadOnChange: true)
     .AddJsonFile(Path.Combine(assemblyPath, $"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)

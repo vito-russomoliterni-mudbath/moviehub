@@ -27,5 +27,5 @@ public class MovieReview
     [Column("reviewDate", TypeName = "date")]
     public DateTime ReviewDate { get; set; }
 
-    public virtual Movie Movie { get; set; }
+    public virtual required Movie Movie { get; set; }
 }
