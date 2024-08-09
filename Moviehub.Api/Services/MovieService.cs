@@ -43,7 +43,7 @@ public class MovieService : IMovieService
                     Synopsis = movieEntity.Synopsis,
                     Director = movieEntity.Director,
                     Rating = movieEntity.Rating,
-                    AvgScore = CalculateAvgScore(movieEntity.MovieReviews.ToList()),
+                    AvgScore = CalculateAvgScore(movieEntity.MovieReviews),
                 }
             );
         }
@@ -82,7 +82,7 @@ public class MovieService : IMovieService
             Synopsis = movie.Synopsis,
             Director = movie.Director,
             Rating = movie.Rating,
-            AvgScore = CalculateAvgScore(movie.MovieReviews.ToList()),
+            AvgScore = CalculateAvgScore(movie.MovieReviews),
             Cinemas = cinemas
         };
     }
