@@ -51,7 +51,7 @@ public class MovieService : IMovieService
         return movies;
     }
 
-    public async Task<MovieDetailDto?> GetMovieDetail(int id)
+    public async Task<MovieDetailDto?> GetMovieDetails(int id)
     {
         var movie = await _movieRepository.GetMovie(id);
 

@@ -47,7 +47,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movie = await _movieService.GetMovieDetail(id);
+            var movie = await _movieService.GetMovieDetails(id);
 
             if (movie == null)
                 return NotFound();
