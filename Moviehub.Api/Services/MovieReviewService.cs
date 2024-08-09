@@ -19,26 +19,6 @@ public class MovieReviewService : IMovieReviewService
         _logger = logger;
     }
 
-    public async Task<MovieReviewDto?> GetMovieReview(int id)
-    {
-        var movieReview = await _movieReviewRepository.GetMovieReview(id);
-
-        if (movieReview == null)
-        {
-            _logger.LogInformation("No movie review found for id {id}", id);
-            return null;
-        }
-
-        return new MovieReviewDto
-        {
-            Id = movieReview.Id,
-            MovieId = movieReview.MovieId,
-            Score = movieReview.Score,
-            Comment = movieReview.Comment,
-            ReviewDate = movieReview.ReviewDate
-        };
-    }
-
     public async Task<List<MovieReviewDto>> GetMovieReviewsByMovieId(int movieId)
     {
         var movieReviews = await _movieReviewRepository.GetMovieReviewsByMovieId(movieId);
