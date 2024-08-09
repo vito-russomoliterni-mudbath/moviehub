@@ -2,17 +2,24 @@ using Moviehub.Api.Services.Interfaces;
 using Moviehub.Data.Database.Entities;
 using Moviehub.Api.Dtos;
 using Moviehub.Data.Repositories.Interfaces;
+using Moviehub.Api.Settings;
+using Microsoft.Extensions.Options;
 
 namespace Moviehub.Api.Services;
 
 public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IPrincessTheatreService _princessTheatreService;
+    private readonly PrincessTheatreApiSettings _princessTheatreApiSettings;
     private readonly ILogger<MovieService> _logger;
 
-    public MovieService(IMovieRepository movieRepository, ILogger<MovieService> logger)
+    public MovieService(IMovieRepository movieRepository,  IOptions<PrincessTheatreApiSettings> options,
+        IPrincessTheatreService princessTheatreService, ILogger<MovieService> logger)
     {
         _movieRepository = movieRepository;
+        _princessTheatreApiSettings = options.Value;
+        _princessTheatreService = princessTheatreService;
         _logger = logger;
     }
 
@@ -54,6 +61,17 @@ public class MovieService : IMovieService
             return null;
         }
 
+        var cinemas = movie
+            .MovieCinemas.Select(mc => new CinemaDto
+            {
+                Name = mc.Cinema.Name,
+                Showtime = mc.Showtime,
+                TicketPrice = mc.TicketPrice
+            }).ToList();
+
+        var princessTheathreCinemas = await GetPrincessTheatreCinemas(movie.PrincessTheatreMovieId);
+        cinemas.AddRange(princessTheathreCinemas);
+
         return new MovieDetailDto
         {
             Id = movie.Id,
@@ -65,13 +83,7 @@ public class MovieService : IMovieService
             Director = movie.Director,
             Rating = movie.Rating,
             AvgScore = CalculateAvgScore(movie.MovieReviews.ToList()),
-            Cinemas = movie
-                .MovieCinemas.Select(mc => new CinemaDto
-                {
-                    Name = mc.Cinema.Name,
-                    Showtime = mc.Showtime,
-                    TicketPrice = mc.TicketPrice
-                }).ToList()
+            Cinemas = cinemas
         };
     }
 
@@ -82,4 +94,48 @@ public class MovieService : IMovieService
 
         return reviews.Average(r => r.Score);
     }
-}
+
+    private async Task<List<CinemaDto>> GetPrincessTheatreCinemas(string movieId)
+    {
+        var cinemas = new List<CinemaDto>();
+
+        foreach (var provider in _princessTheatreApiSettings.MovieProviders)
+        {
+            try
+            {
+                var princessTheatreMovies = await _princessTheatreService.GetPrincessTheatreMovies(provider);
+
+                if (princessTheatreMovies == null)
+                {
+                    _logger.LogWarning("No movies found for provider {provider}", provider);
+                    continue;
+                }
+
+                var princessTheatreShows = princessTheatreMovies.Movies
+                    .Where(m => IsMovieIdMatching(movieId, m.Id))
+                    .Select(m => new CinemaDto
+                    {
+                        Name = princessTheatreMovies.Provider,
+                        TicketPrice = m.Price,
+                        Showtime = DateTime.Now
+                    });
+
+                _logger.LogInformation("{Count} shows found for provider {provider}", princessTheatreShows.Count(), provider);
+
+                cinemas.AddRange(princessTheatreShows);
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Error fetching movies for provider {Provider}", provider);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error occurred while fetching movies for provider {provider}", provider);
+            }
+        }
+
+        return cinemas;
+    }
+
+    private bool IsMovieIdMatching(string movieId, string moviePrincessTheatreId)
+        => movieId.ToLower() == moviePrincessTheatreId.Substring(2).ToLower();}

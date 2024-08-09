@@ -5,6 +5,7 @@ using Moviehub.Data.Database;
 using Moviehub.Api.Dtos;
 using Xunit;
 using static Moviehub.Api.Tests.TestDbHelper;
+using Moq;
 
 namespace Moviehub.Api.Tests;
 
@@ -68,6 +69,9 @@ public class MovieControllerTests
     public async Task GetMovieDetails_ReturnsSuccessStatusCode()
     {
         // Arrange
+        _factory.MockPrincessTheatreService
+            .Setup(x => x.GetPrincessTheatreMovies(It.IsAny<string>()))
+            .ReturnsAsync(new PrincessTheatreResponseDto());
         var request = new HttpRequestMessage(HttpMethod.Get, "/api/movie/1");
 
         // Act

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Moviehub.Api.Services.Interfaces;
 using Moviehub.Api.Services;
+using Moviehub.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,13 @@ builder.Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<PrincessTheatreApiSettings>(builder.Configuration.GetSection("PrincessTheatreApiSettings"));
+builder.Services.AddHttpClient<PrincessTheatreService>();
+
 builder.Services.AddControllers();
 builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddTransient<IMovieReviewService, MovieReviewService>();
+builder.Services.AddTransient<IPrincessTheatreService, PrincessTheatreService>();
 builder.Services.AddTransient<IMovieRepository, MovieRepository>();
 builder.Services.AddTransient<IMovieReviewRepository, MovieReviewRepository>();
 builder.Services.AddDbContext<MoviehubDbContext>(options =>
